@@ -51,7 +51,7 @@ function getResult() {
     $(".city").append(humidity)
     $(".city").append(uvIndex)
 
-    var geoUrl = ""
+    var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityCode + "," + countryCode + "&limit=5&appid=de27dd4b45f47d1694de79aed229c0a8"
 
     //We then pass the requestUrl variable as an argument to the fetch() method, like in the following code:
     fetch(geoUrl)
@@ -66,7 +66,7 @@ function getResult() {
             geoLat = data[0].lat;
 
             //use geoLat and geoLon to fetch the current weather
-            var weatherUrl = ""
+            var weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=de27dd4b45f47d1694de79aed229c0a8";
 
             fetch(weatherUrl)
 
