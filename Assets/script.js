@@ -2,17 +2,25 @@ function addResult() {
 
     inputCity = document.getElementById("myInput").value;
     historyList = getInfo();
-    var searchCity = $("<div>")
-    searchCity.attr('id', inputCity)
-    searchCity.text(inputCity)
-    searchCity.addClass("h4")
+    const searchCity = $("<div>");
+    searchCity.attr('id', inputCity);
+    searchCity.text(inputCity);
+    searchCity.addClass("h4");
 
     if (historyList.includes(inputCity) === false) {
-        $(".history").append(searchCity)
+        $(".history").append(searchCity);
     }
-    $(".subtitle").attr("style", "display:inline")
+    $(".subtitle").attr("style", "display:inline");
     addInfo(inputCity);
 };
+
+//add event listener to search history item
+$(".history").on('click', function (event) {
+    event.preventDefault();
+    $(".subtitle").attr("style", "display:inline")
+    document.getElementById("myInput").value = event.target.id;
+    getResult();
+});
 
 // add event listner to the search button
 document.getElementById("searchBtn").addEventListener("click", addResult);
@@ -26,21 +34,21 @@ function getResult() {
     $(".city").empty()
 
     inputCity = document.getElementById("myInput").value;
-    var countryCode = 'US';
-    var cityCode = inputCity;
+    const countryCode = 'US';
+    let cityCode = inputCity;
 
-    var geoLon;
-    var geoLat;
+    let geoLon;
+    let geoLat;
 
-    var cityName = $("<h>")
+    const cityName = $("<h>")
     cityName.addClass("h3")
-    var temp = $("<div>")
-    var wind = $("<div>")
-    var humidity = $("<div>")
-    var uvIndex = $("<div>")
-    var icon = $("<img>")
+    const temp = $("<div>")
+    const wind = $("<div>")
+    const humidity = $("<div>")
+    const uvIndex = $("<div>")
+    const icon = $("<img>")
     icon.addClass("icon");
-    var dateTime = $("<div>")
+    const dateTime = $("<div>")
 
     $(".city").addClass("list-group")
     $(".city").append(cityName)
@@ -51,7 +59,7 @@ function getResult() {
     $(".city").append(humidity)
     $(".city").append(uvIndex)
 
-    var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityCode + "," + countryCode + "&limit=5&appid=de27dd4b45f47d1694de79aed229c0a8"
+    const geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityCode + "," + countryCode + "&limit=5&appid=7d1b285353ccacd5326159e04cfab063"
 
     //We then pass the requestUrl variable as an argument to the fetch() method, like in the following code:
     fetch(geoUrl)
@@ -66,7 +74,7 @@ function getResult() {
             geoLat = data[0].lat;
 
             //use geoLat and geoLon to fetch the current weather
-            var weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=de27dd4b45f47d1694de79aed229c0a8";
+            let weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=7d1b285353ccacd5326159e04cfab063";
 
             fetch(weatherUrl)
 
@@ -82,7 +90,7 @@ function getResult() {
 
                     cityName.text(cityCode);
                     //translate utc to date
-                    var date = new Date(data.current.dt * 1000);
+                    const date = new Date(data.current.dt * 1000);
                     dateTime.text(" (" + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + ")");
 
                     temp.text("Temperature: " + data.current.temp + " F");
@@ -91,7 +99,7 @@ function getResult() {
 
                     // WHEN I view the UV index
                     // THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe  
-                    var uvi = $("<div>")
+                    const uvi = $("<div>")
                     uvIndex.text("UV Index: ");
                     uvi.text(data.current.uvi)
                     uvIndex.append(uvi)
@@ -114,7 +122,7 @@ function getResult() {
                     //using the data from previous fetch and display the 5 day weather data
                     for (var i = 1; i < 6; i++) {
 
-                        var blueContainer = $("<div")
+                        const blueContainer = $("<div>")
                         this["futureDate" + i] = $("<h>")
                         this["futureIcon" + i] = $("<img>")
                         this["futureTemp" + i] = $("<div>")
@@ -152,8 +160,18 @@ function getResult() {
 // THEN I am again presented with current and future conditions for that city
 
 //get local storage info
+function getInfo() {
+    var currentList = localStorage.getItem("city");
+    if (currentList !== null) {
+        freshList = JSON.parse(currentList);
+        return freshList;
+    } else {
+        freshList = [];
+    }
+    return freshList;
+}
 function addInfo(n) {
-    var addedList = getInfo();
+    const addedList = getInfo();
 
     if (historyList.includes(inputCity) === false) {
         addedList.push(n);
@@ -163,10 +181,10 @@ function addInfo(n) {
 };
 //render history
 function renderInfo() {
-    var historyList = getInfo();
-    for (var i = 0; i < historyList.length; i++) {
-        var inputCity = historyList[i];
-        var searchCity = $("<div>")
+    historyList = getInfo();
+    for (let i = 0; i < historyList.length; i++) {
+        let inputCity = historyList[i];
+        let searchCity = $("<div>")
         searchCity.attr('id', inputCity)
         searchCity.text(inputCity)
         searchCity.addClass("h4")
