@@ -17,6 +17,6 @@
 
 # Links
 
-[Github Repo]()
+[Github Repo](https://github.com/AdamLSmith1984/Weather-Dashboard-Server-Side-API-s.git)
 
-[Deployed GitHub-Pages Site]()
+[Deployed GitHub-Pages Site](https://adamlsmith1984.github.io/Weather-Dashboard-Server-Side-API-s/)
